@@ -1,0 +1,38 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>js</title>
+</head>
+<script language="javascript">
+function getTDtext()
+{
+var id_list = []
+var rows = document.getElementById("test_table").rows;
+var a = document.getElementsByName("r");
+//var states = "";
+var  table = document.getElementById("test_table");
+for(var i=0;i<a.length;i++)
+{
+if(a[i].checked){
+var row = a[i].parentElement.parentElement.rowIndex;
+//states += rows[row].cells[1].innerHTML+";";
+  //alert(a[i].value);
+
+  id_list += (rows[row].cells[1].innerHTML);
+  alert(id_list)
+}
+}
+}
+</script>
+<body>
+<table id="test_table">
+<tr><td><input type="checkbox" name="r" value="1"></td><td>a</td></tr>
+<tr><td><input type="checkbox" name="r" value="2"></td><td>b</td></tr>
+<tr><td><input type="checkbox" name="r" value="3"></td><td>c</td></tr>
+<tr><td><input type="checkbox" name="r" value="4"></td><td>d</td></tr>
+<tr><td><input type="checkbox" name="r" value="5"></td><td>e</td></tr>
+<tr><td><input type="checkbox" name="r" value="6"></td><td>f</td></tr>
+</table>
+<input type="button" onclick="getTDtext()" value="button">
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="content" class="flex">
+
+        <h1>选择 inter face 来修改</h1>
+
+  <div id="content-main">
+        <ul class="object-tools">
+            <li>
+              <a href="/admin/interfacescanner/interface/add/" class="addlink">
+                增加 inter face
+              </a>
+            </li>
+        </ul>
+
+    <div class="module" id="changelist">
+
+        <form id="changelist-form" method="post" novalidate=""><input type="hidden" name="csrfmiddlewaretoken" value="xyL4rQSNAHacFJ9GwrmJtbBwpPCNXwX1WCNQRBti9VZHuxfGAqY9iRZNphPgcDiI">
+
+        <div class="actions">
+        <label>动作 <select name="action" required="">
+        <option value="" selected="selected">---------</option>
+        <option value="delete_selected">删除所选的 inter faces</option>
+        </select></label><input class="select-across" name="select_across" type="hidden" value="0">
+        <button type="submit" class="button" title="运行选中的动作" name="index" value="0">执行</button>
+
+        <span class="action-counter" data-actions-icnt="1" style="display: inline;">选中了 1 个中的 1 个</span>
+
+
+        </div>
+
+
+
+
+<div class="results">
+<table id="result_list">
+<thead>
+<tr>
+
+<th scope="col" class="action-checkbox-column">
+
+   <div class="text"><span><input type="checkbox" id="action-toggle"></span></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-name">
+
+
+
+   <div class="text"><a href="?o=1.-6">接口描述</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-theurl">
+
+
+
+   <div class="text"><a href="?o=2.-6">接口url</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-proxy">
+
+
+
+   <div class="text"><a href="?o=3.-6">代理地址</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-postdata">
+
+
+
+   <div class="text"><a href="?o=4.-6">Post参数</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-expection">
+
+
+
+   <div class="text"><a href="?o=5.-6">预期响应</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-created_time sorted descending">
+
+
+       <div class="sortoptions">
+         <a class="sortremove" href="?o=" title="删除排序"></a>
+
+         <a href="?o=6" class="toggle descending" title="正逆序切换"></a>
+       </div>
+
+
+   <div class="text"><a href="?o=6">Created time</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-method">
+
+
+
+   <div class="text"><a href="?o=7.-6">请求方式</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-station">
+
+
+
+   <div class="text"><a href="?o=8.-6">是否有效</a></div>
+   <div class="clear"></div>
+</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr class="row1 selected"><td class="action-checkbox"><input class="action-select" name="_selected_action" type="checkbox" value="1"></td><th class="field-name"><a href="/admin/interfacescanner/interface/1/change/">猫眼评论接口</a></th><td class="field-theurl">http://m.maoyan.com/mmdb/comments/movie/342598.json?_v_=yes&amp;offset=0</td><td class="field-proxy">-</td><td class="field-postdata">&nbsp;</td><td class="field-expection">total</td><td class="field-created_time nowrap">2017年9月2日 13:22</td><td class="field-method nowrap">get</td><td class="field-station"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+
+</tbody>
+</table>
+</div>
+
+
+
+
+
+
+<p class="paginator">
+
+1 inter face
+
+
+</p>
+
+      </form>
+    </div>
+  </div>
+
+
+        <br class="clear">
+    </div>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="http://cdn.bootcss.com/twitter-bootstrap/2.0.4/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-bottom: 10px;
+      }
+      #components{
+        min-height: 600px;
+      }
+      #target{
+        min-height: 200px;
+        border: 1px solid #ccc;
+        padding: 5px;
+      }
+      #target .component{
+        border: 1px solid #fff;
+      }
+      #temp{
+        width: 500px;
+        background: white;
+        border: 1px dotted #ccc;
+        border-radius: 10px;
+      }
+
+      .popover-content form {
+        margin: 0 auto;
+        width: 213px;
+      }
+      .popover-content form .btn{
+        margin-right: 10px
+      }
+      #source{
+        min-height: 500px;
+      }
+    </style>
+     <link href="http://cdn.bootcss.com/twitter-bootstrap/2.0.4/css/bootstrap-responsive.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <form class="form-horizontal">
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">新增接口</legend>
+      </div>
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">接口说明</label>
+          <div class="controls">
+            <input type="text" placeholder="描述接口作用" class="input-xlarge">
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">接口 URL</label>
+          <div class="controls">
+            <input type="text" placeholder="http开头" class="input-xlarge">
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+
+
+    <div class="control-group">
+
+          <!-- Select Basic -->
+          <label class="control-label">请求方式</label>
+          <div class="controls">
+            <select class="input-xlarge">
+      <option>get</option>
+      <option>post</option>
+      <option></option>
+      <option></option></select>
+          </div>
+
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">代理地址</label>
+          <div class="controls">
+            <input type="text" placeholder="非必填" class="input-xlarge">
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">Post参数</label>
+          <div class="controls">
+            <input type="text" placeholder="post方式必填" class="input-xlarge">
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+    <div class="control-group">
+
+          <!-- Text input-->
+          <label class="control-label" for="input01">预期结果</label>
+          <div class="controls">
+            <input type="text" placeholder="必填" class="input-xlarge">
+            <p class="help-block"></p>
+          </div>
+        </div>
+
+    <div class="control-group">
+          <label class="control-label">填好了吗？</label>
+
+          <!-- Button -->
+          <div class="controls">
+            <button class="btn btn-success">OK！我要新增！</button>
+          </div>
+        </div>
+
+    </fieldset>
+  </form>
+
+</body>
+</html>
