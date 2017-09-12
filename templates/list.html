@@ -1,147 +1,115 @@
-{% load staticfiles %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+{% extends 'base.html' %}
 
-	<!-- Le styles -->
-	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-	<link href="{% static 'css/layoutit.css' %}" rel="stylesheet">
+{% block title %}接口列表页{% endblock %}
 
-
-
-	<script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/jquery.ui.touch-punch.min.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-
-	<script type="text/javascript" src="{% static 'js/jquery.htmlClean.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/scripts.min.js' %}"></script>
+{% block login_state %}
+<ul class="nav navbar-nav navbar-right">
+<li><a href="#">{{user}}</a></li>
+<li><a href="#">退出</a></li>
+</ul>
+{% endblock %}
 
 
-</head>
-<body>
 
-<div class="container">
-	<div class="row clearfix">
-		<div class="col-md-8 column">
-			<table class="table table-hover table-condensed table-striped">
-				<thead>
-					<tr>
-                        <th>
-							编号
-						</th>
-						<th>
-							接口名称
-						</th>
-						<th>
-							URL
-						</th>
-						<th>
-							代理
-						</th>
-						<th>
-							post参数
-						</th>
-                        <th>
-							预期响应
-						</th>
-                        <th>
-							请求方式
-						</th>
-                        <th>
-							是否有效
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-                {% for interface in  interface_list %}
-					<tr>
-						<td>
-							{{ interface.id }}
-						</td>
-						<td>
-							{{ interface.name }}
-						</td>
-						<td>
-							{{ interface.theurl }}
-						</td>
-                        <td>
-							{{ interface.proxy }}
-						</td>
-                        <td>
-							{{ interface.postdata }}
-						</td>
-                        <td>
-							{{ interface.expection }}
-						</td>
-                        <td>
-							{{ interface.method }}
-						</td>
-                        <td>
-							{{ interface.station }}
-						</td>
-
-					</tr>
-                {% endfor %}
-				</tbody>
-			</table>
-			<ul class="pagination">
-				<li>
-					 <a href="#">Prev</a>
-				</li>
-				<li>
-					 <a href="#">1</a>
-				</li>
-				<li>
-					 <a href="#">2</a>
-				</li>
-				<li>
-					 <a href="#">3</a>
-				</li>
-				<li>
-					 <a href="#">4</a>
-				</li>
-				<li>
-					 <a href="#">5</a>
-				</li>
-				<li>
-					 <a href="#">Next</a>
-				</li>
-			</ul>
-		</div>
-		<div class="col-md-4 column">
-			 <button type="button" class="btn btn-lg btn-primary">按钮</button>
-             <button type="button" class="btn btn-lg btn-primary">按钮</button>
-			<ol>
-				<li>
-					Lorem ipsum dolor sit amet
-				</li>
-				<li>
-					Consectetur adipiscing elit
-				</li>
-				<li>
-					Integer molestie lorem at massa
-				</li>
-				<li>
-					Facilisis in pretium nisl aliquet
-				</li>
-				<li>
-					Nulla volutpat aliquam velit
-				</li>
-				<li>
-					Faucibus porta lacus fringilla vel
-				</li>
-				<li>
-					Aenean sit amet erat nunc
-				</li>
-				<li>
-					Eget porttitor lorem
-				</li>
-			</ol>
-		</div>
-	</div>
+{% block action %}
+<div class="panel-body">
+    <div class="list-op" id="list_op">
+        <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+        <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+        </button>
+        <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
+        <button id="verify_interface" type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>验证选中的接口
+        </button>
+    </div>
 </div>
-</body>
-</html>
+{% endblock %}
+
+{% block search %}<div class="page-header">
+        <div id="navbar" class="navbar-collapse collapse">
+          <form class="navbar-form" method="get" action="/search_name/">
+            <div class="form-group">
+              <input name="name" type="text" placeholder="名称" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">搜索</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>{% endblock %}
+
+{% block content %}
+    <section>
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table table-condensed" style="word-break:break-all; word-wrap:break-all;">
+            <thead>
+              <tr>
+                <th>接口编号</th>
+                <th>接口名称</th>
+                <th  width="30%">URL地址</th>
+                <th>代理地址</th>
+                <th>post参数</th>
+                <th  width="30%">预期响应</th>
+                <th>请求方式</th>
+                <th>是否有效</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for interface in  interface_list.object_list %}
+                <tr>
+                  <td>{{ interface.id }}</td>
+                  <td>{{ interface.name }}</td>
+                  <td>
+                      {{ interface.theurl}}</td>
+                  <td>{{ interface.proxy}}</td>
+                  <td>{{ interface.postdata }}</td>
+                  <td>
+                      {{ interface.expection }}</td>
+                  <td>{{ interface.method }}</td>
+                  <td>{% if interface.station %}
+                      <div class="switch switch-mini"  id="mySwitch">
+                        <input type="checkbox" checked  data-on-text="成功" data-off-text="失败"/>
+                      </div>
+                      {% else %}
+                      <div class="switch switch-mini"  id="mySwitch">
+                        <input type="checkbox"  data-on-text="成功" data-off-text="失败"/>
+                      </div>
+                      {% endif %}
+                  </td>
+
+                </tr>
+             {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="pageturn">
+            <ul class="pagination">
+                {% if interface_list.has_previous %}
+                <li class="long"><a href="?{{ interface_list.previous_page_number.querystring }}">上一页</a></li>
+                {% endif %}
+
+
+                {% for page in interface_list.pages %}
+                    {% if page %}
+                        {% ifequal page interface_list.number %}
+                            <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                        {% else %}
+                            <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                        {% endifequal %}
+                    {% else %}
+                        <li class="none"><a href="">...</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if interface_list.has_next %}
+                    <li class="long"><a href="?{{ interface_list.next_page_number.querystring }}">下一页</a></li>
+                {% endif %}
+
+            </ul>
+        </div>
+      </div>
+    </section>
+{% endblock %}

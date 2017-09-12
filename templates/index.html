@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+
+{% block title %}首页{% endblock %}
+
+
+{% block login_state %}
+<ul class="nav navbar-nav navbar-right">
+<li><a href="/login">登录</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-condensed" style="word-break:break-all; word-wrap:break-all;">
+        <thead>
+          <tr>
+            <th>接口编号</th>
+            <th>接口名称</th>
+            <th  width="30%">URL地址</th>
+            <th>代理地址</th>
+            <th>post参数</th>
+            <th  width="30%">预期响应</th>
+            <th>请求方式</th>
+            <th>是否有效</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for interface in  interface_list.object_list %}
+            <tr>
+              <td>{{ interface.id }}</td>
+              <td>{{ interface.name }}</td>
+              <td>
+                  {{ interface.theurl}}</td>
+              <td>{{ interface.proxy}}</td>
+              <td>{{ interface.postdata }}</td>
+              <td>
+                  {{ interface.expection }}</td>
+              <td>{{ interface.method }}</td>
+              <td>{% if interface.station %}
+                  <div class="switch switch-mini"  id="mySwitch">
+                    <input type="checkbox" checked  data-on-text="成功" data-off-text="失败"/>
+                  </div>
+                  {% else %}
+                  <div class="switch switch-mini"  id="mySwitch">
+                    <input type="checkbox"  data-on-text="成功" data-off-text="失败"/>
+                  </div>
+                  {% endif %}
+              </td>
+
+            </tr>
+         {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="pageturn">
+        <ul class="pagination">
+            {% if interface_list.has_previous %}
+            <li class="long"><a href="?{{ interface_list.previous_page_number.querystring }}">上一页</a></li>
+            {% endif %}
+
+
+            {% for page in interface_list.pages %}
+                {% if page %}
+                    {% ifequal page interface_list.number %}
+                        <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                    {% else %}
+                        <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                    {% endifequal %}
+                {% else %}
+                    <li class="none"><a href="">...</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if interface_list.has_next %}
+                <li class="long"><a href="?{{ interface_list.next_page_number.querystring }}">下一页</a></li>
+            {% endif %}
+
+        </ul>
+    </div>
+  </div>
+{% endblock %}
+

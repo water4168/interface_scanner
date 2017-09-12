@@ -7,9 +7,8 @@
       <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
       <meta name="description" content="">
       <meta name="author" content="">
-      <link rel="icon" href="../../favicon.ico">
 
-      <title>Guest Manage System</title>
+      <title>{% block title %}接口自动化平台{% endblock %}</title>
 
       <!-- Bootstrap core CSS -->
       <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
@@ -17,8 +16,7 @@
       <!-- Custom styles for this template -->
       <link href="//v3.bootcss.com/examples/theme/theme.css" rel="stylesheet">
   </head>
-
-  <body role="document">
+<body role="document">
 
       <!-- 导航栏 -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -27,14 +25,8 @@
           <a class="navbar-brand" href="#">接口自动化测试平台</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-{#          <ul class="nav navbar-nav">#}
-{#            <li class="active"><a href="#">接口列表</a></li>#}
-{#          </ul>#}
-          <ul class="nav navbar-nav navbar-right">
-           <li><a href="#">{{user}}</a></li>
-           <li><a href="#">退出</a></li>
-         </ul>
-        </div><!--/.nav-collapse -->
+           {% block login_state %}{% endblock %}
+        </div>
       </div>
     </nav>
 
@@ -42,107 +34,13 @@
 
 
  <div class="container theme-showcase" role="main">
-
-    <div class="panel-body">
-        <div class="list-op" id="list_op">
-            <button type="button" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-            </button>
-            <button type="button" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-            </button>
-            <button type="button" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-            </button>
-            <button id="verify_interface" type="button" class="btn btn-default btn-sm">
-                <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>验证选中的接口
-            </button>
-        </div>
-    </div>
-
+    {% block action %}{% endblock %}
       <!--发布会表单-->
-      <div class="page-header">
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form" method="get" action="/search_name/">
-            <div class="form-group">
-              <input name="name" type="text" placeholder="名称" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">搜索</button>
-          </form>
-        </div><!--/.navbar-collapse -->
-      </div>
+    {% block search %}{% endblock %}
 
-      <div class="row">
-        <div class="table-responsive">
-          <table class="table table-condensed" style="word-break:break-all; word-wrap:break-all;">
-            <thead>
-              <tr>
-                <th>接口编号</th>
-                <th>接口名称</th>
-                <th  width="30%">URL地址</th>
-                <th>代理地址</th>
-                <th>post参数</th>
-                <th  width="30%">预期响应</th>
-                <th>请求方式</th>
-                <th>是否有效</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for interface in  interface_list.object_list %}
-                <tr>
-                  <td>{{ interface.id }}</td>
-                  <td>{{ interface.name }}</td>
-                  <td>
-                      {{ interface.theurl}}</td>
-                  <td>{{ interface.proxy}}</td>
-                  <td>{{ interface.postdata }}</td>
-                  <td>
-                      {{ interface.expection }}</td>
-                  <td>{{ interface.method }}</td>
-                  <td>{% if interface.station %}
-                      <div class="switch switch-mini"  id="mySwitch">
-                        <input type="checkbox" checked  data-on-text="成功" data-off-text="失败"/>
-                      </div>
-                      {% else %}
-                      <div class="switch switch-mini"  id="mySwitch">
-                        <input type="checkbox"  data-on-text="成功" data-off-text="失败"/>
-                      </div>
-                      {% endif %}
-                  </td>
+    {% block content %}
 
-                </tr>
-             {% endfor %}
-            </tbody>
-          </table>
-        </div>
-
-      <div class="pageturn">
-            <ul class="pagination">
-                {% if interface_list.has_previous %}
-                <li class="long"><a href="?{{ interface_list.previous_page_number.querystring }}">上一页</a></li>
-                {% endif %}
-
-
-                {% for page in interface_list.pages %}
-                    {% if page %}
-                        {% ifequal page interface_list.number %}
-                            <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
-                        {% else %}
-                            <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
-                        {% endifequal %}
-                    {% else %}
-                        <li class="none"><a href="">...</a></li>
-                    {% endif %}
-                {% endfor %}
-                {% if interface_list.has_next %}
-                    <li class="long"><a href="?{{ interface_list.next_page_number.querystring }}">下一页</a></li>
-                {% endif %}
-
-            </ul>
-        </div>
-
-
-      </div>
+    {% endblock %}
 
 
     <div class="container theme-showcase" role="main">
@@ -161,6 +59,7 @@
   <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
   <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="//cdn.bootcss.com/bootstrap-switch/4.0.0-alpha.1/js/bootstrap-switch.min.js"></script>
+  {% block srcjs %}{% endblock %}
      <!--实现checkbox的单选全选功能-->
      <script>
         $(function(){
@@ -237,6 +136,8 @@
 
      </script>
 
- </body>
+  {% block basejs %}{% endblock %}
+
+</body>
 
 </html>
