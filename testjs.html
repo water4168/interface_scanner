@@ -10,27 +10,27 @@
 <table width="100%" border="1" cellspacing="0" cellpadding="0" id="tab"> 
     
     <tr  bgcolor="#cccccc" id="tr1"> 
-        <td><input type="checkbox"  name="checkitem" value="13" /> </td>
+		<td><input type="checkbox"  name="checkitem" value="13" /> </td>
         <td >11　</td> 
         <td id="test">12 </td> 
 
     </tr>
 
     <tr onclick="c1(this);"  bgcolor="#e0e0e0" id="tr2"> 
-         <td><input type="checkbox" name="checkitem" /> </td>
+		 <td><input type="checkbox" name="checkitem" /> </td>
         <td id="td2">21　</td> 
         <td>23</td>
        
    
     </tr>
     <tr onclick="c1(this);" bgcolor="#cccccc" id="tr3"> 
-         <td><input type="checkbox" name="checkitem" /> </td>
+		 <td><input type="checkbox" name="checkitem" /> </td>
         <td >31</td> 
         <td>32 </td>
        
     </tr>
     <tr  bgcolor="#e0e0e0" id="tr4"> 
-         <td><input type="checkbox" name="checkitem" /> </td>
+		 <td><input type="checkbox" name="checkitem" /> </td>
         <td >
            41
         </td> 
@@ -40,7 +40,7 @@
        
     </tr>
     <tr onclick="c1(this);" bgcolor="#cccccc" id="tr5"> 
-         <td><input type="checkbox" name="checkitem" /> </td>
+		 <td><input type="checkbox" name="checkitem" /> </td>
         <td >
             51
         </td> 
@@ -59,16 +59,16 @@ function comeout(){
 var allbox =  document.getElementsByName("checkitem")
 for (var i=0;i<allbox.length;i++)
 {
-    //if(allbox[i].checked){
-        values.push(allbox[i].parent.nextSibling.inerHTML)
-    //}
-        
- }  
+	//if(allbox[i].checked){
+		values.push(allbox[i].parentNode.nextSbiling.innerHTML)
+	//}
+		
+ }	
 }
-
-</script>   
-    
-    
-    
+document.write(values)
+</script>	
+	
+	
+	
 </body>
 </html>
