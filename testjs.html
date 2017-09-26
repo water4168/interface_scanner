@@ -58,12 +58,15 @@ var values = new Array();
 function comeout(){
 var allbox =  document.getElementsByName("checkitem");
 
-    for (var i=0;i<allbox.length;i++){
+	for (var i=0;i<allbox.length;i++){
         //document.write(allbox[i]+'<br>');
         //document.write(allbox.length);
-      values.push(allbox[i].parentNode.nextElementSibling.innerHTML);       
+	 if(allbox[i].checked){
+	 	values.push(allbox[i].parentNode.nextElementSibling.innerHTML); 
+	 }
+            
 }  
-    document.write(values)
+	document.write(values)
 }
 
 </script>   
