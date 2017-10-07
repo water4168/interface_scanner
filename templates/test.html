@@ -8,7 +8,7 @@
       <meta name="description" content="">
       <meta name="author" content="">
 
-      <title>{% block title %}接口自动化平台{% endblock %}</title>
+      <title>接口自动化平台</title>
 
       <!-- Bootstrap core CSS -->
       <link href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
@@ -25,17 +25,7 @@
           <a class="navbar-brand" href="#">接口自动化测试平台</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-        {% if  request.user.is_authenticated %}
-             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">{{user}}</a></li>
-                <li><a href="/logout">退出</a></li>
-
-        {% else %}
-            <ul class="nav navbar-nav navbar-right">
-             <li><a href="/login">登录</a></li>
-            </ul>
-        {% endif %}
-        </ul>
+           {% block login_state %}{% endblock %}
         </div>
       </div>
     </nav>
@@ -44,13 +34,78 @@
 
 
  <div class="container theme-showcase" role="main">
-    {% block action %}{% endblock %}
 
-    {% block search %}{% endblock %}
+<div class="panel-body">
+    <div class="list-op" id="list_op">
+        <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+        <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+        </button>
+        <button type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
+        <button id="verify_interface" type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-heart" aria-hidden="true"></span>验证选中的接口
+        </button>
+    </div>
+</div>
+   <div id="navbar" class="navbar-collapse collapse">
+      <form class="navbar-form" method="get" action="/search_name/">
+        <div class="form-group">
+          <input name="name" type="text" placeholder="名称" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success">搜索</button>
+      </form>
+    </div><!--/.navbar-collapse -->
+  </div>
 
-    {% block content %}
+    <section>
+      <div class="row">
+        <div class="table-responsive">
+          <table class="table table-condensed" style="word-break:break-all; word-wrap:break-all;" id="alllist">
+            <thead>
+              <tr>
+                <th>接口编号</th>
+                <th>接口名称</th>
+                <th  width="30%">URL地址</th>
+                <th>代理地址</th>
+                <th>post参数</th>
+                <th  width="30%">预期响应</th>
+                <th>请求方式</th>
+                <th>是否有效</th>
+              </tr>
+            </thead>
+            <tbody>
 
-    {% endblock %}
+                <tr>
+                  <td>{{ interface.id }}</td>
+                  <td>{{ interface.name }}</td>
+                  <td>{{ interface.theurl}}</td>
+                  <td>{{ interface.proxy}}</td>
+                  <td>{{ interface.postdata }}</td>
+                  <td>{{ interface.expection }}</td>
+                  <td>{{ interface.method }}</td>
+                  <td>{% if interface.station %}
+                      <div class="switch switch-mini"  id="mySwitch">
+                        <input type="checkbox" checked  data-on-text="成功" data-off-text="失败"/>
+                      </div>
+                      {% else %}
+                      <div class="switch switch-mini"  id="mySwitch">
+                        <input type="checkbox"  data-on-text="成功" data-off-text="失败"/>
+                      </div>
+
+                  </td>
+
+                </tr>
+             {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
 
 
     <div class="container theme-showcase" role="main">
@@ -97,9 +152,9 @@
                     $(this).find('input').click();
                 });
                 var $tbr = $('table tbody tr');
-{#                var $checkItemTd = $('<td><input type="checkbox" name="checkItem" /></td>');#}
+                var $checkItemTd = $('<td><input type="checkbox" name="checkItem" /></td>');
                 /*每一行都在最前面插入一个选中复选框的单元格*/
-{#                $tbr.prepend($checkItemTd);#}
+                $tbr.prepend($checkItemTd);
                 /*点击每一行的选中复选框时*/
                 $tbr.find('input').click(function(event){
                     /*调整选中行的CSS样式*/
@@ -114,7 +169,6 @@
         });
         </script>
 
-
      <!--状态切换-->
      <script type="text/javascript">
             $(function(){
@@ -123,23 +177,21 @@
 
      </script>
 
-     <script type="text/javascript">
+<script type="text/javascript">
 
 var Idlist = new Array();
+//var tbr = $("input[name='checkItem']")
+var tbr = document.getElementsByName("checkItem")
 
-function comeout(){
-var allbox =  document.getElementsByName("checkItem");
+for (var i=0;i<tbr.length;i++){
+    if (tbr[i].checked){
+        td_id = tbr[i].nextSibling.innerHTML
 
-	for (var i=0;i<allbox.length;i++){
-        //document.write(allbox[i]+'<br>');
-        //document.write(allbox.length);
-         if(allbox[i].checked){
-            Idlist.push(allbox[i].parentNode.nextElementSibling.innerHTML);
-         }
+        document.write(td_id)
 
+        Idlist[i] = td_id
     }
 }
-
 
 function verify_interface(current_elem, Idlist){
 
@@ -169,14 +221,12 @@ function verify_interface(current_elem, Idlist){
 }
 
 $('#verify_interface').on('click', function(){
-    comeout();
     verify_interface($(this), Idlist);
 });
 
 </script>
 
 
-     {% block basejs %}{% endblock %}
 
  </div>
 </body>

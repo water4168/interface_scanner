@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^$', IndexView.as_view(), name='index'),
     url(r'login/$', LoginView.as_view(), name='login'),
     url(r'list/$', views.List, name='list'),
-    url(r'list/verify/$', views.Verify, name='verify'),
+    url(r'verify/$', views.Verify, name='verify'),
+    url(r'logout/$', views.logout, name='logout'),
 
 ]

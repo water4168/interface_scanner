@@ -2,14 +2,6 @@
 
 {% block title %}接口列表页{% endblock %}
 
-{% block login_state %}
-<ul class="nav navbar-nav navbar-right">
-<li><a href="#">{{user}}</a></li>
-<li><a href="#">退出</a></li>
-</ul>
-{% endblock %}
-
-
 
 {% block action %}
 <div class="panel-body">
@@ -45,15 +37,15 @@
     <section>
       <div class="row">
         <div class="table-responsive">
-          <table class="table table-condensed" style="word-break:break-all; word-wrap:break-all;">
+          <table class="table table-condensed" style="word-break:break-all; word-wrap:break-all;" id="alllist">
             <thead>
               <tr>
                 <th>接口编号</th>
                 <th>接口名称</th>
-                <th  width="30%">URL地址</th>
+                <th  width="25%">URL地址</th>
                 <th>代理地址</th>
                 <th>post参数</th>
-                <th  width="30%">预期响应</th>
+                <th  width="25%">预期响应</th>
                 <th>请求方式</th>
                 <th>是否有效</th>
               </tr>
@@ -61,14 +53,13 @@
             <tbody>
               {% for interface in  interface_list.object_list %}
                 <tr>
+                  <td><input type="checkbox" name="checkItem" /></td>
                   <td>{{ interface.id }}</td>
                   <td>{{ interface.name }}</td>
-                  <td>
-                      {{ interface.theurl}}</td>
+                  <td>{{ interface.theurl}}</td>
                   <td>{{ interface.proxy}}</td>
                   <td>{{ interface.postdata }}</td>
-                  <td>
-                      {{ interface.expection }}</td>
+                  <td>{{ interface.expection }}</td>
                   <td>{{ interface.method }}</td>
                   <td>{% if interface.station %}
                       <div class="switch switch-mini"  id="mySwitch">
@@ -112,4 +103,60 @@
         </div>
       </div>
     </section>
+{% endblock %}
+
+
+{% block basejs %}
+<script type="text/javascript">
+
+var Idlist = new Array();
+
+function comeout(){
+var allbox =  document.getElementsByName("checkItem");
+
+	for (var i=0;i<allbox.length;i++){
+        //document.write(allbox[i]+'<br>');
+        //document.write(allbox.length);
+         if(allbox[i].checked){
+            Idlist.push(allbox[i].parentNode.nextElementSibling.innerHTML);
+         }
+
+    }
+}
+
+
+function verify_interface(current_elem, Idlist){
+
+
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url "interfacescanner:verify" %}",
+        data:{'Idlist':Idlist},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="/login/";
+                }else{
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+
+$('#verify_interface').on('click', function(){
+    comeout();
+    verify_interface($(this), Idlist);
+});
+
+</script>
+
 {% endblock %}
