@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-from .forms import LoginForm
+from .forms import LoginForm, InterfaceForm
 from .models import InterFace
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
@@ -17,12 +17,6 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 class IndexView(View):
     def get(self, request):
         interface_list = InterFace.objects.all()
-        # 判断登录态
-        if request.user.is_authenticated():
-            username = request.COOKIES.get('username', '')
-        else:
-            username = ''
-
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
@@ -32,7 +26,7 @@ class IndexView(View):
 
         interfaces = p.page(page)
 
-        return render(request, 'index.html', {"interface_list": interfaces, "username": username})
+        return render(request, 'index.html', {"interface_list": interfaces})
 
 
 class LoginView(View):
@@ -73,10 +67,11 @@ def List(request):
     return render(request, 'list.html', {"user": username, "interface_list": interfaces})
 
 
-#退出
-def logout(request):
-    logout(request)
-    return HttpResponseRedirect(reversed("logout"))
+# 退出 现在还不能实现清除cookie！
+def logouted(request):
+    response = HttpResponseRedirect('/login/')
+    response.delete_cookie('username')
+    return response
 
 
 def interfacetest(interface):
@@ -84,8 +79,6 @@ def interfacetest(interface):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) '
                              'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.134 Safari/537.36'
                }
-    #if interface.proxy:
-
 
     if interface.method.name == "get":
         r = requests.get(url=interface.theurl, headers=headers
@@ -133,7 +126,6 @@ def interfacetest(interface):
 def Verify(request):
     '''验证ajax传过来的接口id'''
     if request.user.is_authenticated():
-
         interfaces_id = request.POST.getlist("Idlist[]")  # getlist("xxx[]") 这样才能取到前端传古来的list
         if len(interfaces_id):
             for id in interfaces_id:
@@ -142,17 +134,50 @@ def Verify(request):
 
             return HttpResponse('{"status":"success", "msg":"已验证完毕"}', content_type='application/json')
         else:
-            pass
+            return HttpResponse('{"status":"fail", "msg":"请勾选接口"}', content_type='application/json')
     else:
         return HttpResponse('{"status":"fail", "msg":"用户未登录"}', content_type='application/json')
 
 
-    # if not request.user.is_authenticated():
-    #     # 判断用户登录状态
-    #
-    #
-    # else:
-    #     return HttpResponse('{"status":"success", "msg":"验证成功"}', content_type='application/json')
+@login_required
+def createone(request):
+    if request.method == "GET":
+        return render(request, 'new_interface.html', {})
+
+    if request.method == "POST":
+
+        form = InterfaceForm(request.POST)
+
+        if form.is_valid():
+            interface_dec = request.POST.get("description", "")
+            interface_url = request.POST.get("theurl", "")
+            if InterFace.objects.filter(theurl=interface_url):
+                return render(request, "new_interface.html", {"form": form, "msg": "url已存在"})
+            interface_meth = request.POST.get("method", "")
+            interface_pro = request.POST.get("proxy", "")
+            interface_data = request.POST.get("postdata", "")
+            interface_exp = request.POST.get("expection", "")
+
+            newInterface = InterFace()
+            newInterface.name = interface_dec
+            newInterface.theurl = interface_url
+            newInterface.method = interface_meth
+            newInterface.proxy = interface_pro
+            newInterface.postdata = interface_data
+            newInterface.expection = interface_exp
+            newInterface.station = False
+            newInterface.save()
+
+            return render(request, 'list.html')
+
+        else:
+            return render(request, "new_interface.html", {"interface_form": form, "msg": "表单错误"})
+
+
+
+
+
+
 
 
 

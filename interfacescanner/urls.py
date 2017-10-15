@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'login/$', LoginView.as_view(), name='login'),
     url(r'list/$', views.List, name='list'),
     url(r'verify/$', views.Verify, name='verify'),
-    url(r'logout/$', views.logout, name='logout'),
+    url(r'logout/$', views.logouted, name='logout'),
+    url(r'createone/$', views.createone, name='create_one')
 
 ]

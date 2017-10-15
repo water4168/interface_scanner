@@ -125,55 +125,55 @@
 
      <script type="text/javascript">
 
-var Idlist = new Array();
+        var Idlist = new Array();
 
-function comeout(){
-var allbox =  document.getElementsByName("checkItem");
+        function comeout(){
+        var allbox =  document.getElementsByName("checkItem");
 
-	for (var i=0;i<allbox.length;i++){
-        //document.write(allbox[i]+'<br>');
-        //document.write(allbox.length);
-         if(allbox[i].checked){
-            Idlist.push(allbox[i].parentNode.nextElementSibling.innerHTML);
-         }
+            for (var i=0;i<allbox.length;i++){
+                //document.write(allbox[i]+'<br>');
+                //document.write(allbox.length);
+                 if(allbox[i].checked){
+                    Idlist.push(allbox[i].parentNode.nextElementSibling.innerHTML);
+                 }
 
-    }
-}
-
-
-function verify_interface(current_elem, Idlist){
-
-
-    $.ajax({
-        cache: false,
-        type: "POST",
-        url:"{% url "interfacescanner:verify" %}",
-        data:{'Idlist':Idlist},
-        async: true,
-        beforeSend:function(xhr, settings){
-            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-        },
-        success: function(data) {
-            if(data.status == 'fail'){
-                if(data.msg == '用户未登录'){
-                    window.location.href="/login/";
-                }else{
-                    alert(data.msg)
-                }
-
-            }else if(data.status == 'success'){
-                current_elem.text(data.msg)
             }
-        },
-    });
-}
+        }
 
-$('#verify_interface').on('click', function(){
-    comeout();
-    verify_interface($(this), Idlist);
-});
 
-</script>
+        function verify_interface(current_elem, Idlist){
+
+
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url:"{% url "interfacescanner:verify" %}",
+                data:{'Idlist':Idlist},
+                async: true,
+                beforeSend:function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function(data) {
+                    if(data.status == 'fail'){
+                        if(data.msg == '用户未登录'){
+                            window.location.href="/login/";
+                        }else{
+                            alert(data.msg)
+                        }
+
+                    }else if(data.status == 'success'){
+                        current_elem.text(data.msg)
+                    }
+                },
+            });
+        }
+
+        $('#verify_interface').on('click', function(){
+            comeout();
+            verify_interface($(this), Idlist);
+        });
+
+     </script>
 
 
      {% block basejs %}{% endblock %}
