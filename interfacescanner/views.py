@@ -149,7 +149,7 @@ def createone(request):
         form = InterfaceForm(request.POST)
 
         if form.is_valid():
-            interface_dec = request.POST.get("description", "")
+            interface_dec = request.POST.get("interface_name", "new")
             interface_url = request.POST.get("theurl", "")
             if InterFace.objects.filter(theurl=interface_url):
                 return render(request, "new_interface.html", {"form": form, "msg": "url已存在"})
@@ -168,7 +168,7 @@ def createone(request):
             newInterface.station = False
             newInterface.save()
 
-            return render(request, 'list.html')
+            return render(request, 'list.html', {"msg": "提交成功"})
 
         else:
             return render(request, "new_interface.html", {"interface_form": form, "msg": "表单错误"})

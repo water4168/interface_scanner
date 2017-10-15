@@ -12,7 +12,7 @@ class Method(models.Model):
 
 
 class InterFace(models.Model):
-    name = models.CharField(max_length=100, verbose_name=u'接口描述', null=True)# null字符型字段如果没有值会返回空字符串。
+    name = models.CharField(max_length=100, verbose_name=u'接口描述')
     theurl = models.URLField(max_length=500, verbose_name=u'接口url', unique=True) #unique是否唯一
     proxy = models.GenericIPAddressField(max_length=20, verbose_name=u'代理地址', null=True, blank=True)
     postdata = models.CharField(max_length=200, verbose_name=u'post参数', blank=True) #blank是否为空
