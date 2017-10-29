@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from .forms import LoginForm, InterfaceForm
-from .models import InterFace
+from .models import InterFace, Method
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
@@ -142,33 +142,42 @@ def Verify(request):
 @login_required
 def createone(request):
     if request.method == "GET":
-        return render(request, 'new_interface.html', {})
+        form = InterfaceForm()
+        return render(request, 'new_interface.html', {"interface_form": form})
 
     if request.method == "POST":
 
         form = InterfaceForm(request.POST)
 
         if form.is_valid():
-            interface_dec = request.POST.get("interface_name", "new")
+            interface_dec = request.POST.get("name", "")
             interface_url = request.POST.get("theurl", "")
             if InterFace.objects.filter(theurl=interface_url):
-                return render(request, "new_interface.html", {"form": form, "msg": "url已存在"})
+                return render(request, "new_interface.html", {"interface_form": form, "msg": "url已存在"})
             interface_meth = request.POST.get("method", "")
             interface_pro = request.POST.get("proxy", "")
             interface_data = request.POST.get("postdata", "")
             interface_exp = request.POST.get("expection", "")
 
             newInterface = InterFace()
+
             newInterface.name = interface_dec
             newInterface.theurl = interface_url
-            newInterface.method = interface_meth
+            if interface_meth =='1':
+                method = Method.objects.get(pk=1)
+                newInterface.method = method
+            else:
+                method = Method.objects.get(pk=2)
+                newInterface.method = method
+
             newInterface.proxy = interface_pro
             newInterface.postdata = interface_data
             newInterface.expection = interface_exp
             newInterface.station = False
             newInterface.save()
 
-            return render(request, 'list.html', {"msg": "提交成功"})
+            response = HttpResponseRedirect('/list/')
+            return response
 
         else:
             return render(request, "new_interface.html", {"interface_form": form, "msg": "表单错误"})

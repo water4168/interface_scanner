@@ -18,7 +18,7 @@ class InterFace(models.Model):
     postdata = models.CharField(max_length=200, verbose_name=u'post参数', blank=True) #blank是否为空
     expection = models.CharField(max_length=200, verbose_name=u'预期响应')
     created_time = models.DateTimeField(auto_now_add=True)
-    method = models.ForeignKey(Method, verbose_name=u'请求方式')
+    method = models.ForeignKey(Method,verbose_name=u'请求方式')
     station = models.BooleanField(default=False, verbose_name="是否有效")
 
     class Meta:

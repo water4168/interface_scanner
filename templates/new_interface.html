@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>新增接口页面</title>
-
     <link href="http://cdn.bootcss.com/twitter-bootstrap/2.0.4/css/bootstrap.min.css" rel="stylesheet">
     <style>
       body {
@@ -41,85 +40,84 @@
     </style>
      <link href="http://cdn.bootcss.com/twitter-bootstrap/2.0.4/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
+
 <body>
-
   <form action="{% url "interfacescanner:create_one" %}" method="post" class="form-horizontal" autocomplete="off">
-
       <div id="legend" class="">
         <legend class="">新增接口</legend>
       </div>
+
     <div class="control-group">
           <!-- Text input-->
-          <label class="control-label" for="input01">接口说明</label>
-          <div class="controls" >
-            <input type="text" placeholder="描述接口作用" class="input-xlarge" name="interface_name" value="{{ interface_form.interface_name.value }}">
+          <label class="control-label" for="input01">接口描述</label>
+          <div class="controls" {% if interface_form.errors.expection %}errorput{% endif %}>
+            <input type="text" placeholder="必填" class="input-xlarge" name="name" >
             <p class="help-block"></p>
           </div>
     </div>
+
 
     <div class="control-group">
           <!-- Text input-->
           <label class="control-label" for="input01">接口 URL</label>
           <div class="controls" {% if interface_form.errors.theurl %}errorput{% endif %}>
-            <input type="text" placeholder="http开头" class="input-xlarge" name="theurl" value="{{ interface_form.theurl.value }}">
+            <input type="text" placeholder="http开头" class="input-xlarge" name="theurl">
             <p class="help-block"></p>
           </div>
     </div>
 
 
-
     <div class="control-group">
-
-
-          <label class="control-label" for="input01">请求方式</label>
+      <label class="control-label" for="input01">请求方式</label>
       <div class="controls" {% if interface_form.errors.method %}errorput{% endif %}>
-         <input type="text" placeholder="post或get" class="input-xlarge" name="method" value="{{ interface_form.method.value }}">
+         <input type="text" placeholder="1代表get,2代表post,请填写数字" class="input-xlarge" name="method">
          <p class="help-block"></p>
       </div>
-
     </div>
 
-    <div class="control-group">
 
+    <div class="control-group">
           <!-- Text input-->
           <label class="control-label" for="input01">代理地址</label>
           <div class="controls" {% if interface_form.errors.proxy %}errorput{% endif %}>
-            <input type="text" placeholder="非必填" class="input-xlarge" name="proxy" value="{{ interface_form.proxy.value }}">
-            <p class="help-block"></p>
-          </div>
-        </div>
-
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">Post参数</label>
-          <div class="controls" {% if interface_form.errors.postdata %}errorput{% endif %}>
-            <input type="text" placeholder="非必填" class="input-xlarge" name="postdata" value="{{ interface_form.postdata.value }}">
-            <p class="help-block"></p>
-          </div>
-        </div>
-
-    <div class="control-group">
-
-          <!-- Text input-->
-          <label class="control-label" for="input01">预期结果</label>
-          <div class="controls" {% if interface_form.errors.expection %}errorput{% endif %}>
-            <input type="text" placeholder="必填" class="input-xlarge" name="expection" value="{{ interface_form.expection.value }}">
+            <input type="text" placeholder="非必填" class="input-xlarge" name="proxy">
             <p class="help-block"></p>
           </div>
     </div>
 
+
+    <div class="control-group">
+          <!-- Text input-->
+          <label class="control-label" for="input01">Post参数</label>
+          <div class="controls" {% if interface_form.errors.postdata %}errorput{% endif %}>
+            <input type="text" placeholder="非必填" class="input-xlarge" name="postdata" >
+            <p class="help-block"></p>
+          </div>
+    </div>
+
+
+    <div class="control-group">
+          <!-- Text input-->
+          <label class="control-label" for="input01">预期结果</label>
+          <div class="controls" {% if interface_form.errors.expection %}errorput{% endif %}>
+            <input type="text" placeholder="必填" class="input-xlarge" name="expection" >
+            <p class="help-block"></p>
+          </div>
+    </div>
+
+
     <div class="control-group">
           <label class="control-label">填好了吗？</label>
-
           <!-- Button -->
           <div class="controls">
             <button class="btn btn-success" type="submit">OK！我要新增！</button>
           </div>
-        </div>
-        <div class="error btns" id="create_error">{% for key,error in interface_form.errors.items %}{{ key }}{{ error }}{% endfor %}</div>
-      {% csrf_token %}
+    </div>
+
+        <div class="error btns controls" id="create_error">{% for key,error in interface_form.errors.items %}{{ key }}{{ error }}{% endfor %}</div>
+   {% csrf_token %}
   </form>
 
 </body>
+
 </html>
