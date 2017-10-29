@@ -133,6 +133,7 @@ def Verify(request):
                 interfacetest(interface)
 
             return HttpResponse('{"status":"success", "msg":"已验证完毕"}', content_type='application/json')
+
         else:
             return HttpResponse('{"status":"fail", "msg":"请勾选接口"}', content_type='application/json')
     else:
@@ -181,6 +182,20 @@ def createone(request):
 
         else:
             return render(request, "new_interface.html", {"interface_form": form, "msg": "表单错误"})
+
+
+@login_required
+def RemoveStation(request):
+    if request.method == 'GET':
+        InterFaces = InterFace.objects.all()
+        for one in InterFaces:
+            one.station = False
+            one.save()
+
+        response = HttpResponseRedirect('/list/')
+        return response
+    else:
+        pass
 
 
 
