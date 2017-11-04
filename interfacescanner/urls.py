@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'verify/$', views.Verify, name='verify'),
     url(r'logout/$', views.logouted, name='logout'),
     url(r'createone/$', views.createone, name='create_one'),
-    url(r'remove/$', views.RemoveStation, name='remove')
+    url(r'remove/$', views.RemoveStation, name='remove'),
+    url(r'delete/$', views.Delete, name='Delete')
 
 ]
