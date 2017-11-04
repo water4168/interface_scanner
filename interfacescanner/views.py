@@ -198,8 +198,23 @@ def RemoveStation(request):
         pass
 
 
+@login_required
+def Delete(request):
+    '''验证ajax传过来的接口id'''
+    if request.user.is_authenticated():
+        interfaces_id = request.POST.getlist("Idlist[]")  # getlist("xxx[]") 这样才能取到前端传古来的list
+        if len(interfaces_id):
+            for id in interfaces_id:
+                interface = InterFace.objects.get(id=int(id))  # 注意要str-->int
+                interface.delete()
+         
+                response = HttpResponseRedirect('/list/')
+                return response
 
-
+        else:
+            return HttpResponse('{"status":"fail", "msg":"删除失败"}', content_type='application/json')
+    else:
+        return HttpResponse('{"status":"fail", "msg":"用户没有权限"}', content_type='application/json')
 
 
 
