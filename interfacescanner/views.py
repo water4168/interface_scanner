@@ -3,6 +3,7 @@
 import requests, re
 from django.views.generic.base import View
 from django.shortcuts import render, get_object_or_404
+from django.contrib import auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -11,9 +12,9 @@ from django.contrib.auth.models import User
 from .forms import LoginForm, InterfaceForm
 from .models import InterFace, Method
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-# Create your views here.
 
 
+# 首页
 class IndexView(View):
     def get(self, request):
         interface_list = InterFace.objects.all()
@@ -29,6 +30,7 @@ class IndexView(View):
         return render(request, 'index.html', {"interface_list": interfaces})
 
 
+# 实现登录
 class LoginView(View):
     def get(self, request):
         return render(request, 'login.html')
@@ -43,7 +45,7 @@ class LoginView(View):
             if user is not None:
                 login(request, user)
                 response = HttpResponseRedirect('/list/')  # 登录成功跳转list
-                response.set_cookie("username", user_name, 3600)  # 写入浏览器的cookie,失效时间3600
+                response.set_cookie("username", user_name, 60)  # 写入浏览器的cookie,失效时间3600
                 request.session['username'] = user_name  # 将 session 信息写到服务器
                 return response
             else:
@@ -69,11 +71,14 @@ def List(request):
 
 # 退出 现在还不能实现清除cookie！
 def logouted(request):
-    response = HttpResponseRedirect('/login/')
-    response.delete_cookie('username')
-    return response
+    auth.logout(request)
+    return HttpResponseRedirect("/login/")
+    # response = HttpResponseRedirect('/login/')
+    # response.delete_cookie('username')
+    # return response
 
 
+# 接口验证方法，给下面的验证接口调用
 def interfacetest(interface):
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) '
@@ -121,7 +126,6 @@ def interfacetest(interface):
         print('method get wrong!')
 
 
-
 @login_required
 def Verify(request):
     '''验证ajax传过来的接口id'''
@@ -140,6 +144,7 @@ def Verify(request):
         return HttpResponse('{"status":"fail", "msg":"用户未登录"}', content_type='application/json')
 
 
+# 新增接口
 @login_required
 def createone(request):
     if request.method == "GET":
@@ -184,6 +189,7 @@ def createone(request):
             return render(request, "new_interface.html", {"interface_form": form, "msg": "表单错误"})
 
 
+# 重置所有的接口状态
 @login_required
 def RemoveStation(request):
     if request.method == 'GET':
@@ -198,6 +204,7 @@ def RemoveStation(request):
         pass
 
 
+# 删除选中的接口
 @login_required
 def Delete(request):
     '''验证ajax传过来的接口id'''
@@ -207,14 +214,14 @@ def Delete(request):
             for id in interfaces_id:
                 interface = InterFace.objects.get(id=int(id))  # 注意要str-->int
                 interface.delete()
-         
-                response = HttpResponseRedirect('/list/')
-                return response
-
+                return HttpResponse('{"status":"success", "msg":"删除成功"}', content_type='application/json')
         else:
             return HttpResponse('{"status":"fail", "msg":"删除失败"}', content_type='application/json')
     else:
         return HttpResponse('{"status":"fail", "msg":"用户没有权限"}', content_type='application/json')
+
+
+
 
 
 

@@ -18,9 +18,9 @@
         </button>
 	
 
-	<button id="delete_interface" type="button" class="btn btn-default btn-sm">
-	    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-	</button>
+        <button id="delete_interface" type="button" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+        </button>
 
 		
         <button id="verify_interface" type="button" class="btn btn-default btn-sm">
@@ -165,9 +165,41 @@ function verify_interface(current_elem, Idlist){
     });
 }
 
+
+function delete_interface(current_elem, Idlist){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"{% url "interfacescanner:delete" %}",
+        data:{'Idlist':Idlist},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="/login/";
+                }else{
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+                location.reload()
+            }
+        },
+    });
+}
+
 $('#verify_interface').on('click', function(){
     comeout();
     verify_interface($(this), Idlist);
+});
+
+$('#delete_interface').on('click', function(){
+    comeout();
+    delete_interface($(this), Idlist);
 });
 
 </script>
