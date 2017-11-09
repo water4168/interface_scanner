@@ -4,9 +4,10 @@ import requests, re
 from django.views.generic.base import View
 from django.shortcuts import render, get_object_or_404
 from django.contrib import auth
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from .forms import LoginForm, InterfaceForm
@@ -59,6 +60,16 @@ def List(request):
 
     username = request.COOKIES.get('username', '')
     interface_list = InterFace.objects.all()
+
+    # ====================搜索==================================
+    search_keywords = request.GET.get('keywords', "")
+    if search_keywords:
+        interface_list = interface_list.filter(
+            Q(name__icontains=search_keywords) |
+            Q(theurl__icontains=search_keywords)
+        )
+
+    # =====================分页==================================
     try:
         page = request.GET.get('page', 1)
     except PageNotAnInteger:
@@ -69,7 +80,7 @@ def List(request):
     return render(request, 'list.html', {"user": username, "interface_list": interfaces})
 
 
-# 退出 现在还不能实现清除cookie！
+# 退出
 def logouted(request):
     auth.logout(request)
     return HttpResponseRedirect("/login/")
@@ -96,7 +107,7 @@ def interfacetest(interface):
                 interface.station = True
                 interface.save()
                 print ('found it')
-                return status, resp
+                #return status, resp
             else:
                 print ('no found ')
 
@@ -115,7 +126,7 @@ def interfacetest(interface):
                 interface.station = True
                 interface.save()
                 print ('found it')
-                return status, resp
+                #return status, resp
             else:
                 print ('no found ')
 

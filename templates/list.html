@@ -32,21 +32,27 @@
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>重置状态
             </button>
         </a>
+
+        <div class="form-group">
+            <button id="search_button" class="btn btn-success">搜索</button>
+            <input id="search_keywords" name="name" type="text" placeholder="名称/url">
+        </div>
     </div>
 </div>
 {% endblock %}
 
-{% block search %}<div class="page-header">
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form" method="get" action="/search_name/">
-            <div class="form-group">
-              <input name="name" type="text" placeholder="名称" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">搜索</button>
-          </form>
-        </div><!--/.navbar-collapse -->
-      </div>{% endblock %}
+{#{% block search %}<div class="page-header">#}
+{#        <div id="navbar" class="navbar-collapse collapse">#}
+{#          <form class="navbar-form">#}
+{#            <div class="form-group">#}
+{#              <input id="search_keywords" name="name" type="text" placeholder="名称/url">#}
+{#            </div>#}
+{#            <button id="search_button" class="btn btn-success">搜索</button>#}
+{#          </form>#}
+{#        </div><!--/.navbar-collapse -->#}
+{#      </div>{% endblock %}#}
 
+//接口列表
 {% block content %}
     <section>
       <div class="row">
@@ -120,7 +126,7 @@
 {% endblock %}
 
 
-//{% block basejs %}
+{% block basejs %}
 <script type="text/javascript">
 
 var Idlist = new Array();
@@ -138,7 +144,7 @@ var allbox =  document.getElementsByName("checkItem");
     }
 }
 
-
+//验证接口
 function verify_interface(current_elem, Idlist){
     $.ajax({
         cache: false,
@@ -166,6 +172,7 @@ function verify_interface(current_elem, Idlist){
 }
 
 
+//删除接口
 function delete_interface(current_elem, Idlist){
     $.ajax({
         cache: false,
@@ -192,15 +199,35 @@ function delete_interface(current_elem, Idlist){
     });
 }
 
+
+//搜索接口
+function search_interface(){
+    var keywords = $('#search_keywords').val(),
+        requesturl = "";
+    if(keywords == ""){
+        requesturl = "/list"
+    }
+    requesturl = "/list?keywords="+keywords
+    window.location.href = requesturl
+}
+
+//验证事件
 $('#verify_interface').on('click', function(){
     comeout();
     verify_interface($(this), Idlist);
 });
 
+//删除事件
 $('#delete_interface').on('click', function(){
     comeout();
     delete_interface($(this), Idlist);
 });
+
+//搜索事件
+$('#search_button').on('click', function () {
+    search_interface()
+})
+
 
 </script>
 
